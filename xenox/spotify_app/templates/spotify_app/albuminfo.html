@@ -85,7 +85,7 @@ $('#playpause').click(function() {
 <body style = "background-color: #000000; color: red; font-family: 'Montserrat', sans-serif;">
   <div style = "padding-left: 20%; padding-right : 10%">
     {% if album %}
-          <table style = "align: center;">
+          <table>
             <tr>
               <td>
                 <img style =  "width: 50%;
@@ -121,6 +121,13 @@ $('#playpause').click(function() {
                     {% endfor %}
                   </div>
               </td>
+              <tr>
+                <td>
+                </td>
+                <td>
+                  <button> Save To Library </button>
+                </td>
+              </tr>
 
           </table>
       {% endif %}

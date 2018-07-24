@@ -129,3 +129,24 @@ def gettracks(album):
     else:
         print ("Can't get token for", username)
     return result
+
+def getartistalbums(artist):
+    scope = 'user-library-read user-read-recently-played user-top-read'
+    username = 'oblixy@yahoo.com'
+    token = util.prompt_for_user_token(username, scope,client_id = '1fbf3e9edded4216bc9f91e6f9e6acf0', client_secret = '8257d880c0124789a40a16a3fc101257',redirect_uri='http://localhost:8000/spotify')
+    result = []
+    if token:
+        sp = spotipy.Spotify(auth=token)
+        results = sp.artist_albums(artist.identifier)
+        # pp.pprint(results)
+        for item in results['items']:
+            try:
+                tempAlbum = (album.objects.get(name = item['name']))
+            except:
+                tempAlbum = album(name = item['name'], artist = item['artists'][0]['name'], image = item['images'][0]['url'], releaseDate = item['release_date'], identifier = item['id'], type = 'individuals')
+                tempAlbum.save()
+            finally:
+                result.append(tempAlbum)
+    else:
+        print ("Can't get token for", username)
+    return result

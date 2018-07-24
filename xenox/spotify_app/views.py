@@ -47,4 +47,10 @@ def albuminfo(request, image_id):
 def artistinfo(request, artist_id):
     artistinfo = artist.objects.get(id=artist_id)
     related_artist = getrelatedartists(artistinfo.identifier)
-    return HttpResponse(related_artist)
+    albums = getartistalbums(artistinfo)
+    context = {
+        'artist' : artistinfo,
+        'related_artist' : related_artist,
+        'albums': albums
+    }
+    return render(request, 'spotify_app/artist.html', context)
