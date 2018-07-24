@@ -1,0 +1,137 @@
+{% load staticfiles %}
+<head>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" type = "text/css" href = "{% static 'spotify_app/albums.css' %}"/>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+  <style>
+      .container {
+        position: relative;
+        width: 20%;
+        /* float:left; */
+        margin: 1.66%;
+        height: 200px;
+      }
+
+      .image {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 7%;
+        bottom: 0;
+        left: 11.5%;
+        right: 0;
+        height: 200px;
+        width: 200px;
+        opacity: 0;
+        transition: .5s ease;
+        background-color: black;
+      }
+
+      .container:hover .overlay {
+        opacity: 0.7;
+      }
+
+      .text {
+        color: red;
+        font-size: 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        text-align: center;
+      }
+
+      div.scrollmenu {
+          background-color: black;
+          overflow-x: scroll;
+          white-space: nowrap;
+      }
+
+      div.scrollmenu .container {
+          display: inline-block;
+          color: white;
+          text-align: center;
+          padding: 14px;
+          text-decoration: none;
+      }
+}
+</style>
+</head>
+<body style = "background-color: #000000; color: red; font-family: 'Montserrat', sans-serif;">
+  <h1 style="text-align:left; color:red; padding-left: 20px;">
+    My Spotify<br>
+  </h1>
+  <h3 style="text-align:center; color:red">
+    My Top Artists<br><hr>
+  </h3>
+  <div class = "scrollmenu" style = "padding-top: 20px; padding-right : 10%">
+        {% for item in top %}
+          <div class="container">
+            <a href="/spotify/artist/{{ item.id }}">
+            <img style = "width: 200px;
+              height: 200px;" src = "{{item.image}}">
+              <div class="overlay">
+                <div class="text">{{ item.name }}</div>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+  </div><br>
+  <h3 style="text-align:center; color:red">
+  My Recently Played Albums<br><hr>
+  </h3>
+  <div class = "scrollmenu" style = "padding-top: 20px; padding-right : 10%">
+      {% for item in recent %}
+        <div class="container">
+          <a href="/spotify/albums/{{ item.id }}">
+          <img style = "width: 200px;
+            height: 200px;" src = "{{item.image}}">
+            <div class="overlay">
+              <div class="text">{{ item.name }}</div>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+  </div><br>
+  <body style = "background-color: #000000">
+    <h3 style="text-align:center; color:red">
+      New Releases<br><hr>
+    </h3>
+    <div class = "scrollmenu" style = "padding-top: 20px; padding-right : 10%">
+          {% for item in new %}
+            <div class="container">
+              <a href="/spotify/albums/{{ item.id }}">
+              <img style = "width: 200px;
+                height: 200px;" src = "{{item.image}}">
+                <div class="overlay">
+                  <div class="text">{{ item.name }}</div>
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+      </div><br>
+
+  <h3 style="text-align:center; color:red">
+        My Albums<br><hr>
+  </h3>
+  <div class = "scrollmenu" style = "padding-top: 20px; padding-right : 10%">
+        {% for item in personal %}
+          <div class="container">
+            <a href="/spotify/albums/{{ item.id }}">
+            <img style = "width: 200px;
+              height: 200px;" src = "{{item.image}}">
+              <div class="overlay">
+                <div class="text">{{ item.name }}</div>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+  </div>
+</body>

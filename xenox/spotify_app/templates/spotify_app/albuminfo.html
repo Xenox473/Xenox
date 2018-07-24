@@ -1,0 +1,146 @@
+{% load staticfiles %}
+<head>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type = "text/css" href = "{% static 'spotify_app/albums.css' %}"/>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <style>
+      .container {
+        position: relative;
+        width: 20%;
+        /* float:left; */
+        margin: 1.66%;
+        height: 200px;
+      }
+
+      .image {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 7%;
+        bottom: 0;
+        left: 11.5%;
+        right: 0;
+        height: 200px;
+        width: 200px;
+        opacity: 0;
+        transition: .5s ease;
+        background-color: black;
+      }
+
+      .container:hover .overlay {
+        opacity: 0.7;
+      }
+
+      .text {
+        color: red;
+        font-size: 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        text-align: center;
+      }
+
+      div.scrollmenu {
+          background-color: black;
+          overflow-x: scroll;
+          white-space: nowrap;
+      }
+
+      div.scrollmenu .container {
+          display: inline-block;
+          color: white;
+          text-align: center;
+          padding: 14px;
+          text-decoration: none;
+      }
+      .vertical-menu {
+          width: 200px;
+          height: 400px;
+          overflow-y: auto;
+      }
+}
+</style>
+<script>
+$('#playpause').click(function() {
+    $(this).toggleClass('glyphicon glyphicon-play-circle');
+    $(this).toggleClass('glyphicon glyphicon-pause');
+});
+</script>
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-black">
+  <div class="container-fluid">
+      <h1 style="text-align:left; color:red"> {{ album.name }} by {{ album.artist }}
+      <h1 style="text-align:right; color:red"> {{ album.releaseDate }}</h1>
+  </div>
+</nav>
+<body style = "background-color: #000000; color: red; font-family: 'Montserrat', sans-serif;">
+  <div style = "padding-left: 20%; padding-right : 10%">
+    {% if album %}
+          <table style = "align: center;">
+            <tr>
+              <td>
+                <img style =  "width: 50%;
+                margin-left: auto;
+                margin-right: auto
+                  height: 200px;" align = "middle" src = "{{album.image}}">
+              </td>
+              <td align="left">
+                <!-- Album Artist: {{ album.artist }}<br>
+                Released: {{ album.releaseDate }} -->
+                <div class = "vertical-menu">
+                    {% for track in track_list %}
+                      {{ track.track_number }}: {{ track.name }}
+                      <audio id="player{{ track.name }}">
+                        <source src="{{ track.preview_url }}" type="audio/mpeg">
+                      </audio>
+                      <!-- <span style = "float: right" class="glyphicon glyphicon-pause" onclick="document.getElementById('player{{ track.name }}').pause()"></span> -->
+                      <span id = "play{{ track.name }}" style = "float: right" class="glyphicon glyphicon-play-circle" onclick="document.getElementById('player{{ track.name }}').play()"></span>
+                      <script type="text/javascript">
+                        document.getElementById("play{{ track.name }}").addEventListener("click", function(){
+                        var audio = document.getElementById('player{{ track.name }}');
+                        if(this.className == 'is-playing glyphicon glyphicon-pause'){
+                          this.className = "glyphicon glyphicon-play-circle";
+                          audio.pause();
+                        }else{
+                          this.className = "is-playing glyphicon glyphicon-pause";
+                          audio.play();
+                        }
+
+                        });
+                      </script>
+                      <hr>
+                    {% endfor %}
+                  </div>
+              </td>
+
+          </table>
+      {% endif %}
+  </div>
+  <br><hr>
+  <h2 style="text-align:left; color:red">
+    Related Artists<br>
+  </h2>
+  <hr>
+  <div class = "scrollmenu" style = "padding-top: 20px; padding-right : 10%">
+        {% for item in related_artist %}
+          <div class="container">
+            <a href="/spotify/artist/{{ item.id }}">
+            <img style = "width: 200px;
+              height: 200px;" src = "{{item.image}}">
+              <div class="overlay">
+                <div class="text">{{ item.name }}</div>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+    </div><br>
+</body>
